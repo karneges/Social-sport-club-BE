@@ -1,0 +1,42 @@
+{
+  "name": "social-sport-club",
+  "version": "0.0.1",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "tsc -w & nodemon ./dist/app.js ",
+    "debug": "tsc -w",
+    "seeder": "tsc ./src/seeder.ts & node ./dist/seeder.js -i"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@types/bcryptjs": "^2.4.2",
+    "@types/colors": "^1.2.1",
+    "@types/cors": "^2.8.6",
+    "@types/dotenv": "^8.2.0",
+    "@types/express": "^4.17.6",
+    "@types/express-fileupload": "^1.1.3",
+    "@types/jsonwebtoken": "^8.3.9",
+    "@types/mongoose": "^5.7.15",
+    "@types/morgan": "^1.9.0",
+    "@types/multer": "^1.4.3",
+    "@types/node": "^13.13.4",
+    "bcryptjs": "^2.4.3",
+    "body-parser": "^1.19.0",
+    "colors": "^1.4.0",
+    "colorts": "^0.1.63",
+    "cors": "^2.8.5",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "express-fileupload": "^1.1.7-alpha.3",
+    "jsonwebtoken": "^8.5.1",
+    "mongoose": "^5.9.12",
+    "morgan": "^1.10.0",
+    "multer": "^1.4.2",
+    "nodemon": "^2.0.3",
+    "tsc": "^1.20150623.0",
+    "typescript": "^3.9.3"
+  }
+}

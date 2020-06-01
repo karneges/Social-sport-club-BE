@@ -1,0 +1,41 @@
+[
+  {
+    "_id": "5ed53ce833e49cd344961800",
+    "name": "GYNK",
+    "owner": "5ed53f58700e1a97755dcee6",
+    "registerDate": "2018-12-15T08:46:11",
+    "users": [
+      "5ed53f588fda8ae6162fdc7b",
+      "5ed53f58a231157a8875a4f0"
+    ],
+    "clubEvents": [
+      "5ed5412bb188b877fc846f22",
+      "5ed5412b35dcf32ddc1fe688",
+      "5ed5412b3b5ae8964af330d8",
+      "5ed5412b504722326064c420"
+    ],
+    "clubRating": 37,
+    "posts": [
+      "5ed544982d819e5fbc056751",
+      "5ed54498493c54bcedad34ea",
+      "5ed544982df9a0b2ae9dab5a",
+      "5ed544983d5486a00b6ea03f"
+    ]
+  },
+  {
+    "_id": "5ed53ce88d5aa49c149b15b5",
+    "name": "APPLIDECK",
+    "owner": "5ed53f58ee73414fbf41f783",
+    "registerDate": "2014-04-28T08:58:11",
+    "users": [
+      "5ed53f5818d4c434dc4e8593",
+      "5ed53f58bab49c27f2aaa9e3",
+      "5ed53f58adcd37d91edfa31d"
+    ],
+    "clubEvents": "5ed53ce8fbf67f64d1f8a3c1",
+    "clubRating": 30,
+    "posts": [
+      "5ed53ce864574ca13f6967c0"
+    ]
+  }
+]
