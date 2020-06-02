@@ -9,6 +9,8 @@ import errorHandler from "./middleware/error";
 import path from 'path';
 import seederRun from "./seeder";
 
+import clubsRouter from './routes/clubs.routes'
+
 
 
 //Connect to database
@@ -23,13 +25,16 @@ app.use(cors())
 //Add body parser
 app.use(express.json())
 // file uploader
-// app.use(expressFileUpload());
+app.use(expressFileUpload());
 
 // Use static Folders
 // app.use(express.static(path.join(__dirname ,'..','static')));
 // app.use('/', express.static(path.join(__dirname ,'..','static/angular')));
 
 //Routes
+app.use('/api/v1/clubs', clubsRouter)
+// app.use('/api/v1/users')
+// app.use('/api/v1/events')
 
 //FE rout
 // app.use('*',(req, res, next) => {

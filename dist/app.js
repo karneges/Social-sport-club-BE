@@ -6,11 +6,13 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 require("colorts/lib/string");
 const cors_1 = __importDefault(require("cors"));
+const express_fileupload_1 = __importDefault(require("express-fileupload"));
 const db_1 = __importDefault(require("./config/db"));
 const config_1 = require("./config/config");
 const morgan_1 = __importDefault(require("morgan"));
 const error_1 = __importDefault(require("./middleware/error"));
 const seeder_1 = __importDefault(require("./seeder"));
+const clubs_routes_1 = __importDefault(require("./routes/clubs.routes"));
 //Connect to database
 db_1.default();
 const new1 = seeder_1.default + 3;
@@ -22,11 +24,14 @@ app.use(cors_1.default());
 //Add body parser
 app.use(express_1.default.json());
 // file uploader
-// app.use(expressFileUpload());
+app.use(express_fileupload_1.default());
 // Use static Folders
 // app.use(express.static(path.join(__dirname ,'..','static')));
 // app.use('/', express.static(path.join(__dirname ,'..','static/angular')));
 //Routes
+app.use('/api/v1/clubs', clubs_routes_1.default);
+// app.use('/api/v1/users')
+// app.use('/api/v1/events')
 //FE rout
 // app.use('*',(req, res, next) => {
 //   res.sendFile(path.join(__dirname,'..', 'static', 'angular/index.html'))
