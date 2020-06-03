@@ -3,14 +3,14 @@
 //Protect routes
 import asyncHandler from "./async";
 import ErrorHandler from "../utils/errorHandler";
-import UserSchema from '../models/user'
-import jwt from 'jsonwebtoken'
+import User from '../models/user'
+import * as jwt from 'jsonwebtoken'
 import { config } from "../config/config";
-import { NextFunction, RequestHandler, Response } from "express";
-import { Request, UserInMongo } from "../type-models/Post";
+import { NextFunction, Request, Response } from "express";
+import { AddUserToRequest, Params } from "../type-models/express.models";
 
 
-export const protect  = asyncHandler(async (req: Request, res:Response, next: NextFunction) => {
+export const protect  = asyncHandler(async (req: Request<Params> & AddUserToRequest, res:Response, next: NextFunction) => {
   let token = '';
   const { authorization = '' } = req.headers;
   if (authorization && authorization.startsWith('Bearer')) {
@@ -21,7 +21,7 @@ export const protect  = asyncHandler(async (req: Request, res:Response, next: Ne
   }
   try {
     const decoded = jwt.verify(token, config.JWT_SECRET) as {id: string};
-    const user = await UserSchema.findById(decoded.id);
+    const user = await User.findById(decoded.id);
     if (user){
       req.user = user
     }

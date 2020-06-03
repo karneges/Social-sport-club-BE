@@ -13,13 +13,22 @@ const postSchema = new Schema({
         type: Date,
         default: Date.now
     },
-    likes: Number
+    likes: {
+        type: Number,
+        default: 0
+    },
+    content: {
+        type: String,
+        minlength: 5,
+        required: true
+    }
 })
 
 export default mongoose.model<PostModel>('Post', postSchema)
 
-export interface PostModel extends Document{
+export interface PostModel extends Document {
     author: UserModel
     publicationDate: Date
     likes: number
+    content: string
 }

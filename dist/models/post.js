@@ -31,7 +31,15 @@ const postSchema = new mongoose_1.Schema({
         type: Date,
         default: Date.now
     },
-    likes: Number
+    likes: {
+        type: Number,
+        default: 0
+    },
+    content: {
+        type: String,
+        minlength: 5,
+        required: true
+    }
 });
 exports.default = mongoose.model('Post', postSchema);
 //# sourceMappingURL=post.js.map

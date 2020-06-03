@@ -1,8 +1,14 @@
-import { NextFunction, Request, RequestHandler, Response } from "express";
-
+import { UserModel } from "../models/user";
 
 export interface Params {
-    [key: string]: string;
-    'id'?: string
+    [key: string ]: string
+    id: string
 }
 
+export interface AdvancedResult {
+    advancedResult: {}
+}
+
+export interface AddUserToRequest {
+    user: UserModel
+}

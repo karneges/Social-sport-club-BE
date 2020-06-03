@@ -47,6 +47,7 @@ const clubSchema = new mongoose_1.Schema({
     posts: [{
             type: mongoose_1.Schema.Types.ObjectId,
             ref: 'Post',
+            select: false
         }]
 });
 exports.default = mongoose.model('Club', clubSchema);

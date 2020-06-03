@@ -17,20 +17,21 @@ const clubSchema = new Schema({
         default: Date.now
     },
     users: [{
-            type: Schema.Types.ObjectId,
-            ref: 'User',
+        type: Schema.Types.ObjectId,
+        ref: 'User',
     }],
     clubEvents: [{
-            type: Schema.Types.ObjectId,
-            ref: 'Event',
+        type: Schema.Types.ObjectId,
+        ref: 'Event',
     }],
     clubRating: {
         type: Number,
         default: 100
     },
     posts: [{
-            type: Schema.Types.ObjectId,
-            ref: 'Post',
+        type: Schema.Types.ObjectId,
+        ref: 'Post',
+        select: false
     }]
 })
 
@@ -38,7 +39,7 @@ export default mongoose.model<ClubModel>('Club', clubSchema)
 
 export interface ClubModel extends Document {
     name: string
-    user: UserModel
+    owner: UserModel
     registerDate: Date
     users: UserModel[]
     clubEvents: EventModel[]
