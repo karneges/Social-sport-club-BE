@@ -41,5 +41,11 @@ const postSchema = new mongoose_1.Schema({
         required: true
     }
 });
+postSchema.pre('save', async function (next) {
+    if (this.isModified('content')) {
+        this.publicationDate = new Date();
+    }
+    next();
+});
 exports.default = mongoose.model('Post', postSchema);
 //# sourceMappingURL=post.js.map

@@ -1,5 +1,3 @@
-
-
 //Protect routes
 import asyncHandler from "./async";
 import ErrorHandler from "../utils/errorHandler";
@@ -10,26 +8,32 @@ import { NextFunction, Request, Response } from "express";
 import { AddUserToRequest, Params } from "../type-models/express.models";
 
 
-export const protect  = asyncHandler(async (req: Request<Params> & AddUserToRequest, res:Response, next: NextFunction) => {
-  let token = '';
-  const { authorization = '' } = req.headers;
-  if (authorization && authorization.startsWith('Bearer')) {
-    token = authorization.split(' ')[1];
-  }
-  if (!token) {
-    return next(new ErrorHandler('Not authorized to access this route', 401));
-  }
-  try {
-    const decoded = jwt.verify(token, config.JWT_SECRET) as {id: string};
-    const user = await User.findById(decoded.id);
-    if (user){
-      req.user = user
+export const protect = asyncHandler(async (req: Request<Params> & AddUserToRequest, res: Response, next: NextFunction) => {
+    let token = '';
+    const { authorization = '' } = req.headers;
+    if (authorization && authorization.startsWith('Bearer')) {
+        token = authorization.split(' ')[1];
     }
-    next();
-  } catch (e) {
-    console.log(e)
-    return next(new ErrorHandler('Not authorized to access this route', 401));
-  }
+    if (!token) {
+        return next(new ErrorHandler('Not authorized to access this route', 401));
+    }
+    try {
+        let decoded: { id: string }
+        if (req.url.includes('token')) {
+            decoded = jwt.verify(token, config.JWT_REFRESH_SECRET) as { id: string };
+        } else {
+            decoded = jwt.verify(token, config.JWT_SECRET) as { id: string };
+        }
+
+        const user = await User.findById(decoded.id);
+        if (user) {
+            req.user = user
+        }
+        next();
+    } catch (e) {
+        console.log(e)
+        return next(new ErrorHandler('Not authorized to access this route', 401));
+    }
 });
 
 // export const authorized = (...role) => {

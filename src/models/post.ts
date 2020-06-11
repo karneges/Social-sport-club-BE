@@ -24,6 +24,13 @@ const postSchema = new Schema({
     }
 })
 
+postSchema.pre('save', async function (next) {
+    if (this.isModified('content')) {
+        (this as PostModel).publicationDate = new Date()
+    }
+    next()
+})
+
 export default mongoose.model<PostModel>('Post', postSchema)
 
 export interface PostModel extends Document {

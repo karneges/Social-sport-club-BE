@@ -13,6 +13,7 @@ const morgan_1 = __importDefault(require("morgan"));
 const error_1 = __importDefault(require("./middleware/error"));
 const seeder_1 = __importDefault(require("./seeder"));
 const clubs_routes_1 = __importDefault(require("./routes/clubs.routes"));
+const auth_routes_1 = __importDefault(require("./routes/auth.routes"));
 //Connect to database
 db_1.default();
 const new1 = seeder_1.default + 3;
@@ -30,7 +31,7 @@ app.use(express_fileupload_1.default());
 // app.use('/', express.static(path.join(__dirname ,'..','static/angular')));
 //Routes
 app.use('/api/v1/clubs', clubs_routes_1.default);
-// app.use('/api/v1/users')
+app.use('/api/v1/auth', auth_routes_1.default);
 // app.use('/api/v1/events')
 //FE rout
 // app.use('*',(req, res, next) => {

@@ -41,8 +41,7 @@ const UserSchema = new mongoose.Schema({
     age: Number,
     sex: {
         type: String,
-        enum: ['male', 'female'],
-        required: [true, 'please add gender']
+        enum: ['male', 'female']
     },
     dateAddToClub: {
         type: Date,
@@ -109,6 +108,11 @@ UserSchema.pre('save', async function (next) {
 UserSchema.methods.getSignetJwtToken = function () {
     return jwt.sign({ id: this._id }, config_1.config.JWT_SECRET, {
         expiresIn: config_1.config.JWT_EXPIRE
+    });
+};
+UserSchema.methods.getRefreshSignetJwtToken = function () {
+    return jwt.sign({ id: this._id }, config_1.config.JWT_REFRESH_SECRET, {
+        expiresIn: config_1.config.JWT_REFRESH_EXPIRE
     });
 };
 UserSchema.methods.matchPassword = async function (enteredPassword) {

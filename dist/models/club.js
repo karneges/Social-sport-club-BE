@@ -44,11 +44,10 @@ const clubSchema = new mongoose_1.Schema({
         type: Number,
         default: 100
     },
-    posts: [{
-            type: mongoose_1.Schema.Types.ObjectId,
-            ref: 'Post',
-            select: false
-        }]
+    posts: {
+        type: [{ type: mongoose_1.Schema.Types.ObjectId, ref: 'Post', }],
+        select: false
+    }
 });
 exports.default = mongoose.model('Club', clubSchema);
 //# sourceMappingURL=club.js.map

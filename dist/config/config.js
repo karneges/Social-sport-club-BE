@@ -9,7 +9,9 @@ exports.config = {
     GEOCODER_API_KEY: 'QFOX4sxyImtwcWrYhCiDwhE5zHD4vBE5',
     FILE_UPLOAD_PATH: '/home/nikita/learnFolder/nodeJS/devcamper_project/public/uploads',
     JWT_SECRET: 'csdcdscsdc34234234sdasdasd',
-    JWT_EXPIRE: '1h',
+    JWT_EXPIRE: '10s',
+    JWT_REFRESH_SECRET: 'csdcdscsasxasxasx3423421134sdasdasd',
+    JWT_REFRESH_EXPIRE: '2h',
     JWT_COOKIE_EXPIRE: '30'
 };
 //# sourceMappingURL=config.js.map

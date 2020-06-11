@@ -1,5 +1,5 @@
 import asyncHandler from "../middleware/async";
-import { NextFunction, Request,Response } from "express";
+import { NextFunction, Request, Response } from "express";
 
 import { AdvancedResult, Params } from "../type-models/express.models";
 import Club from '../models/club'
@@ -40,21 +40,21 @@ export const getClub = asyncHandler(async (req: Request<Params>, res: Response, 
 //@access       Private
 export const addPostToCLub = asyncHandler(async (req: Request<Params, any, PostModel>, res: Response, next: NextFunction) => {
     const clubId = req.params.id
-    const { id } = await Post.create(req.body)
-    const club = await Club.findById(clubId)
+    const post = await Post.create(req.body)
+    const club = await Club.findById(clubId).select('+posts')
 
     if (!club) {
         return next(
-            new ErrorHandler(`No club with ID${ id }`,
+            new ErrorHandler(`No club with ID${ post.id }`,
                 400)
         )
     }
 
-    club.posts.push(id)
+    club.posts.push(post.id)
     await club.save()
     res.status(201).json({
         status: 'success',
-        club
+        post
     })
 })
 
@@ -75,5 +75,33 @@ export const getPosts = asyncHandler(async (req: Request<Params>, res: Response,
     res.status(200).json({
         status: 'success',
         posts
+    })
+})
+
+export const editPost = asyncHandler(async (req: Request<Params, any, PostModel>, res: Response, next: NextFunction) => {
+    let post = await Post.findById(req.params.postId)
+
+    if (!post) {
+        return next(
+            new ErrorHandler(`No club with ID${ req.params.postId }`,
+                400)
+        )
+    }
+    for (let field in req.body) {
+        // @ts-ignore
+        post[field] = req.body[field]
+    }
+    await post.save()
+    res.status(200).json({
+        status: 'success',
+        post
+    })
+
+})
+
+export const deletePost = asyncHandler(async (req: Request<Params, any, PostModel>, res: Response, next: NextFunction) => {
+    const post = await Post.findByIdAndDelete()
+    res.status(202).json({
+        status: 'success'
     })
 })

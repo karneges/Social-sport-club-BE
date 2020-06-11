@@ -22,8 +22,7 @@ const UserSchema = new mongoose.Schema({
     age: Number,
     sex: {
         type: String,
-        enum: ['male', 'female'],
-        required: [true, 'please add gender']
+        enum: ['male', 'female']
     },
     dateAddToClub: {
         type: Date,
@@ -97,6 +96,12 @@ UserSchema.methods.getSignetJwtToken = function () {
     });
 };
 
+UserSchema.methods.getRefreshSignetJwtToken = function () {
+    return jwt.sign({ id: this._id }, config.JWT_REFRESH_SECRET, {
+        expiresIn: config.JWT_REFRESH_EXPIRE
+    });
+};
+
 UserSchema.methods.matchPassword = async function (enteredPassword: string) {
     return await bcrypt.compare(enteredPassword, this.password);
 };
@@ -120,5 +125,8 @@ export interface UserModel extends Document {
     resetPasswordToken: string
     resetPasswordExpire: Date
     createdAt: Date
+    getSignetJwtToken: () => string
+    getRefreshSignetJwtToken: () => string
+    matchPassword: (password: string) => Promise<boolean>
 }
 

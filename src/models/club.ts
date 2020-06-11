@@ -28,11 +28,10 @@ const clubSchema = new Schema({
         type: Number,
         default: 100
     },
-    posts: [{
-        type: Schema.Types.ObjectId,
-        ref: 'Post',
+    posts: {
+        type: [{ type: Schema.Types.ObjectId ,  ref: 'Post',}],
         select: false
-    }]
+    }
 })
 
 export default mongoose.model<ClubModel>('Club', clubSchema)
