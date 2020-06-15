@@ -1,6 +1,38 @@
-//@desc         Add new post to club
-//@route        POST /api/v1/clubs/:id/post
-//@access       Private
+import { Model, Document } from 'mongoose';
+
+export class CrudBase<T extends Document, C extends Document> {
+    entityPopulateString: string
+    constructor(
+        private req: Request,
+        private res: Response,
+        private next: NextFunction,
+        private model: Model<T>,
+        private populateOf: Model<C>,
+        private entityName: string) {
+        this.entityPopulateString = `+${this.entityName}`
+    }
+
+    async add() {
+        const clubId = this.req.params.id
+        const entity = await this.model.create(this.req.body)
+        const parentDocument = await this.populateOf.findById(clubId).select(this.entityPopulateString)
+
+        if (!parentDocument) {
+            return this.next(
+                new ErrorHandler(`No club with ID${ clubId }`,
+                    400)
+            )
+        }
+
+        (parentDocument[this.entityName] as []).push(post.id)
+        await club.save()
+        this.res.status(201).json({
+            status: 'success',
+            post
+        })
+    }
+}
+
 import asyncHandler from '../middleware/async';
 import { NextFunction, Request, Response } from 'express';
 import { Params, Query } from '../type-models/express.models';
@@ -38,10 +70,10 @@ export const addPostToCLub = asyncHandler(async (req: Request<Params, any, PostM
 //@route        GET /api/v1/clubs/:id/posts
 //@access       Public
 export const getPosts = asyncHandler(async (req: Request<Params, any, any, Query>, res: Response, next: NextFunction) => {
-    const { limit, skip } = paginator( +req.query.page,+req.query.limit)
+    const { limit, skip } = paginator(+req.query.page, +req.query.limit)
     const { posts } = (await Club.findById(req.params.id).populate({
         path: 'posts',
-        options: { sort: '-publicationDate'},
+        options: { sort: '-publicationDate' },
         limit,
         skip,
     }))!

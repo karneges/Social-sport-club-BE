@@ -1,6 +1,6 @@
 export const config = {
   NODE_ENV: 'development',
-  PORT: '3000',
+  PORT: '4000',
 
   MONGO_URI: 'mongodb+srv://Nikita:77No7jYD6AQut516@cluster0-svfak.mongodb.net/social-sport-club',
 

@@ -1,16 +1,14 @@
 import { Router } from 'express'
-import { addPostToCLub, deletePost, editPost, getPosts } from "../controllers/clubs.controller";
-import advancedResults from "../middleware/advancedQuery";
-import Club from '../models/club'
+import { addPostToCLub, deletePost, editPost, getPosts } from "../controllers/post.controller";
 
 const router = Router({ mergeParams: true })
 
 router
-    .get('/:id/posts', getPosts)
-    .post('/:id/posts', addPostToCLub)
+    .get('/', getPosts)
+    .post('/', addPostToCLub)
 router
-    .put('/:id/posts/:postId', editPost)
-    .delete('/:id/posts/:postId', deletePost)
+    .put('/:postId', editPost)
+    .delete('/:postId', deletePost)
 
 
 export default router

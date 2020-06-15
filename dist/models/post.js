@@ -31,6 +31,9 @@ const postSchema = new mongoose_1.Schema({
         type: Date,
         default: Date.now
     },
+    updateDate: {
+        type: Date
+    },
     likes: {
         type: Number,
         default: 0
@@ -43,7 +46,7 @@ const postSchema = new mongoose_1.Schema({
 });
 postSchema.pre('save', async function (next) {
     if (this.isModified('content')) {
-        this.publicationDate = new Date();
+        this.updateDate = new Date();
     }
     next();
 });

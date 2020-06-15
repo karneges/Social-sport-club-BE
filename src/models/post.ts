@@ -13,6 +13,9 @@ const postSchema = new Schema({
         type: Date,
         default: Date.now
     },
+    updateDate: {
+        type: Date
+    },
     likes: {
         type: Number,
         default: 0
@@ -26,7 +29,7 @@ const postSchema = new Schema({
 
 postSchema.pre('save', async function (next) {
     if (this.isModified('content')) {
-        (this as PostModel).publicationDate = new Date()
+        (this as PostModel).updateDate = new Date()
     }
     next()
 })
@@ -35,7 +38,8 @@ export default mongoose.model<PostModel>('Post', postSchema)
 
 export interface PostModel extends Document {
     author: UserModel
-    publicationDate: Date
+    publicationDate: Date,
+    updateDate: Date
     likes: number
     content: string
 }

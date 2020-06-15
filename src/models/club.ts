@@ -20,16 +20,16 @@ const clubSchema = new Schema({
         type: Schema.Types.ObjectId,
         ref: 'User',
     }],
-    clubEvents: [{
-        type: Schema.Types.ObjectId,
-        ref: 'Event',
-    }],
+    clubEvents: {
+        type: [{ type: Schema.Types.ObjectId, ref: 'Event' }],
+        select: false
+    },
     clubRating: {
         type: Number,
         default: 100
     },
     posts: {
-        type: [{ type: Schema.Types.ObjectId ,  ref: 'Post',}],
+        type: [{ type: Schema.Types.ObjectId, ref: 'Post', }],
         select: false
     }
 })

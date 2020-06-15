@@ -36,10 +36,10 @@ const clubSchema = new mongoose_1.Schema({
             type: mongoose_1.Schema.Types.ObjectId,
             ref: 'User',
         }],
-    clubEvents: [{
-            type: mongoose_1.Schema.Types.ObjectId,
-            ref: 'Event',
-        }],
+    clubEvents: {
+        type: [{ type: mongoose_1.Schema.Types.ObjectId, ref: 'Event' }],
+        select: false
+    },
     clubRating: {
         type: Number,
         default: 100
