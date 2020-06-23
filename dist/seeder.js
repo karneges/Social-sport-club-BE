@@ -8,11 +8,7 @@ const fs = require('fs');
 const mongoose = require('mongoose');
 const dotenv = require('dotenv');
 require("colorts/lib/string");
-//Load models
-const club_1 = __importDefault(require("./models/club"));
-const event_1 = __importDefault(require("./models/event"));
-const user_1 = __importDefault(require("./models/user"));
-const post_1 = __importDefault(require("./models/post"));
+const message_1 = __importDefault(require("./models/message"));
 //Connect to DB
 mongoose.connect(config_1.config.MONGO_URI, {
     useNewUrlParser: true,
@@ -26,13 +22,15 @@ const clubs = JSON.parse(fs.readFileSync(`${__dirname}/_data/clubs.json`, 'utf-8
 const events = JSON.parse(fs.readFileSync(`${__dirname}/_data/events.json`, 'utf-8'));
 const users = JSON.parse(fs.readFileSync(`${__dirname}/_data/users.json`, 'utf-8'));
 const posts = JSON.parse(fs.readFileSync(`${__dirname}/_data/posts.json`, 'utf-8'));
+const messages = JSON.parse(fs.readFileSync(`${__dirname}/_data/messages.json`, 'utf-8'));
 //Import into DB
 const importData = async () => {
     try {
-        await club_1.default.create(clubs);
-        await event_1.default.create(events);
-        await user_1.default.create(users);
-        await post_1.default.create(posts);
+        // await Club.create(clubs);
+        // await Event.create(events);
+        // await User.create(users);
+        // await Post.create(posts);
+        await message_1.default.create(messages);
         console.log('Data Imported...'.green.inverse);
         process.exit();
     }
@@ -44,10 +42,11 @@ const importData = async () => {
 //Delete date
 const deleteData = async () => {
     try {
-        await club_1.default.deleteMany({});
-        await event_1.default.deleteMany({});
-        await user_1.default.deleteMany({});
-        await post_1.default.deleteMany({});
+        // await Club.deleteMany({});
+        // await Event.deleteMany({});
+        // await User.deleteMany({});
+        // await Post.deleteMany({});
+        await message_1.default.deleteMany({});
         console.log('Data Destroyed...'.red.inverse);
         process.exit();
     }

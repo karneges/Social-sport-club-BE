@@ -1,9 +1,8 @@
 import { Model } from "mongoose";
-import { NextFunction, RequestHandler, Request as ExpRequest, Response } from "express";
-import { Request } from "../type-models/Post";
+import { NextFunction, RequestHandler, Request, Response } from "express";
 import { Pagination } from "../type-models/Pagintaion";
 
-const advancedResults = (model: Model<any>, populate?: string[]) => async (req: Request | ExpRequest, res: Response, next: NextFunction) => {
+const advancedResults = (model: Model<any>, populate?: string[]) => async (req: Request , res: Response, next: NextFunction) => {
     const reqQuery = { ...req.query };
 
     //Field to exclude

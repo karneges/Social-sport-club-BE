@@ -8,16 +8,22 @@ const user_1 = __importDefault(require("../models/user"));
 const async_1 = __importDefault(require("../middleware/async"));
 const utils_1 = require("../utils/utils");
 const errorHandler_1 = __importDefault(require("../utils/errorHandler"));
+const password_generator_1 = __importDefault(require("password-generator"));
 //@desc         Register user
 //@route        GET /api/v1/auth/register
 //@access       Public
 exports.register = async_1.default(async (req, res) => {
-    const { name, email, password, role } = req.body;
+    if (req.body.gId) {
+        req.body.password = password_generator_1.default();
+    }
+    const { name, email, password, role, gId = '', photoUrl = '' } = req.body;
     const user = await user_1.default.create({
         name,
         email,
         password,
-        role
+        role,
+        gId,
+        photoUrl
     });
     sendTokenResponse(user, 200, res);
 });
@@ -25,12 +31,12 @@ exports.register = async_1.default(async (req, res) => {
 //@route        GET /api/v1/auth/login
 //@access       Public
 exports.login = async_1.default(async (req, res, next) => {
-    const { login: name, password } = req.body;
-    const user = await user_1.default.findOne({ name }).select('+password');
+    const { email, password = '', gId } = req.body;
+    const user = await user_1.default.findOne({ email }).select('+password').select('+gId');
     if (!user) {
         return next(new errorHandler_1.default('Invalid login or password', 401));
     }
-    const isValidPassword = await user.matchPassword(password);
+    const isValidPassword = await user.matchPassword(password ? password : gId, !!gId);
     if (!isValidPassword) {
         return next(new errorHandler_1.default('Invalid login or password', 401));
     }

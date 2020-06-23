@@ -1,6 +1,5 @@
 import path from "path";
 import ErrorHandler from "./errorHandler";
-import {Request, PostInMongo} from "../type-models/Post";
 import {Request  as ReqExpress} from 'express'
 import {Model} from "mongoose";
 import {UploadedFile} from "express-fileupload";

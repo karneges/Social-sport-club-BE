@@ -19,6 +19,16 @@ const UserSchema = new mongoose.Schema({
             'Please add a valid email'
         ]
     },
+    gId: {
+        type: String,
+        select: false
+    },
+    photoUrl: {
+        type: String,
+    },
+    socketId: {
+        type: String
+    },
     age: Number,
     sex: {
         type: String,
@@ -33,6 +43,9 @@ const UserSchema = new mongoose.Schema({
         type: String,
         enum: ['admin', 'trainer', 'user'],
         default: 'user'
+    },
+    isOnline: {
+        type: Boolean
     },
     countDaysInClub: Number,
     rating: String,
@@ -90,6 +103,12 @@ UserSchema.pre<UserModel>('save', async function (next) {
     next();
 });
 
+// Switch user online status
+UserSchema.pre<UserModel>('save', async function (next) {
+    this.isOnline = !!this.socketId
+    next();
+});
+
 UserSchema.methods.getSignetJwtToken = function () {
     return jwt.sign({ id: this._id }, config.JWT_SECRET, {
         expiresIn: config.JWT_EXPIRE
@@ -102,7 +121,10 @@ UserSchema.methods.getRefreshSignetJwtToken = function () {
     });
 };
 
-UserSchema.methods.matchPassword = async function (enteredPassword: string) {
+UserSchema.methods.matchPassword = async function (enteredPassword: string, gId: boolean = false) {
+    if (gId) {
+        return enteredPassword === this.gId
+    }
     return await bcrypt.compare(enteredPassword, this.password);
 };
 
@@ -121,12 +143,16 @@ export interface UserModel extends Document {
     invites: EventModel[]
     challenges: EventModel[]
     statistics: string,
-    password: string
+    password: string,
+    gId?: string
+    socketId?: string
+    photoUrl?: string
     resetPasswordToken: string
     resetPasswordExpire: Date
     createdAt: Date
+    isOnline: boolean
     getSignetJwtToken: () => string
     getRefreshSignetJwtToken: () => string
-    matchPassword: (password: string) => Promise<boolean>
+    matchPassword: (password: string, gId?: boolean) => Promise<boolean>
 }
 

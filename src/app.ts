@@ -8,16 +8,29 @@ import morgan from 'morgan'
 import errorHandler from "./middleware/error";
 import path from 'path';
 import seederRun from "./seeder";
+import http from 'http'
+import socket from 'socket.io'
+
 
 import clubsRouter from './routes/clubs.routes'
 import authRouter from './routes/auth.routes'
+import usersRouter from './routes/user.routes'
+import { socketConnect } from './socket/socket.connect';
 
-
+let userId = ''
 //Connect to database
 connectDB();
 const new1 = seederRun + 3
 // start app
 const app = express();
+
+// Native server with Express
+const server = http.createServer(app)
+
+// Connect Socket.io
+export const io = socket(server)
+io.on('connect', socketConnect)
+
 
 app.use(morgan('dev'))
 // Add Cors
@@ -34,6 +47,7 @@ app.use(expressFileUpload());
 //Routes
 app.use('/api/v1/clubs', clubsRouter)
 app.use('/api/v1/auth', authRouter)
+app.use('/api/v1/users', usersRouter)
 // app.use('/api/v1/events')
 
 //FE rout
@@ -45,7 +59,7 @@ app.use(errorHandler);
 
 const PORT = config.PORT || 3000;
 
-const server = app.listen(
+server.listen(
     PORT, () => {
         console.log(
             `Server running in ${ process.env.NODE_ENV } mode on port ${ PORT }`.yellow.bold

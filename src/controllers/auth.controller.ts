@@ -1,23 +1,29 @@
 import User, { UserModel } from '../models/user'
 import asyncHandler from '../middleware/async';
 import { NextFunction, Request, Response } from 'express';
-import { AddUserToRequest, Params } from '../type-models/express.models';
+import { AddUserToRequest, AuthQuery, Params } from '../type-models/express.models';
 import { getExpireTokenDate } from '../utils/utils';
 import { TokenResponseModel } from '../type-models/token-response.model';
 import ErrorHandler from '../utils/errorHandler';
 import { AuthRegisterCredential } from '../type-models/auth.model';
+import passwordGenerator from 'password-generator'
 
 
 //@desc         Register user
 //@route        GET /api/v1/auth/register
 //@access       Public
-export const register = asyncHandler(async (req: Request<Params, any, AuthRegisterCredential>, res: Response) => {
-    const { name, email, password, role } = req.body;
+export const register = asyncHandler(async (req: Request<Params, any, AuthRegisterCredential, AuthQuery>, res: Response) => {
+    if (req.body.gId) {
+        req.body.password = passwordGenerator()
+    }
+    const { name, email, password, role, gId = '', photoUrl = '' } = req.body;
     const user = await User.create({
         name,
         email,
         password,
-        role
+        role,
+        gId,
+        photoUrl
     });
     sendTokenResponse(user, 200, res);
 });
@@ -26,14 +32,15 @@ export const register = asyncHandler(async (req: Request<Params, any, AuthRegist
 //@route        GET /api/v1/auth/login
 //@access       Public
 export const login = asyncHandler(async (req: Request<Params>, res: Response, next: NextFunction) => {
-    const { login: name, password } = req.body;
-    const user = await User.findOne({ name }).select('+password')
+    const { email, password = '', gId } = req.body;
+    const user = await User.findOne({ email }).select('+password').select('+gId')
     if (!user) {
         return next(
             new ErrorHandler('Invalid login or password', 401)
         )
     }
-    const isValidPassword = await user.matchPassword(password)
+
+    const isValidPassword = await user.matchPassword(password ? password : gId, !!gId)
     if (!isValidPassword) {
         return next(
             new ErrorHandler('Invalid login or password', 401)

@@ -2,6 +2,8 @@
 export interface AuthRegisterCredential {
     name: string,
     email: string,
-    password: string,
-    role?: 'admin' | 'trainer' | 'user'
+    password?: string,
+    gId?: string
+    role?: 'admin' | 'trainer' | 'user',
+    photoUrl?: string
 }

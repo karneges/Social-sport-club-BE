@@ -10,6 +10,7 @@ import Club from './models/club'
 import Event  from './models/event'
 import User  from './models/user'
 import Post  from './models/post'
+import Message from './models/message'
 
 //Connect to DB
 
@@ -35,15 +36,19 @@ const users = JSON.parse(
 const posts = JSON.parse(
   fs.readFileSync(`${__dirname}/_data/posts.json`, 'utf-8')
 );
+const messages = JSON.parse(
+    fs.readFileSync(`${__dirname}/_data/messages.json`, 'utf-8')
+);
 
 //Import into DB
 
 const importData = async () => {
   try {
-    await Club.create(clubs);
-    await Event.create(events);
-    await User.create(users);
-    await Post.create(posts);
+    // await Club.create(clubs);
+    // await Event.create(events);
+    // await User.create(users);
+    // await Post.create(posts);
+    await Message.create(messages);
     console.log('Data Imported...'.green.inverse);
     process.exit();
   } catch (e) {
@@ -56,10 +61,11 @@ const importData = async () => {
 
 const deleteData = async () => {
   try {
-    await Club.deleteMany({});
-    await Event.deleteMany({});
-    await User.deleteMany({});
-    await Post.deleteMany({});
+    // await Club.deleteMany({});
+    // await Event.deleteMany({});
+    // await User.deleteMany({});
+    // await Post.deleteMany({});
+    await Message.deleteMany({});
     console.log('Data Destroyed...'.red.inverse);
     process.exit();
   } catch (e) {

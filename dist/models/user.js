@@ -38,6 +38,16 @@ const UserSchema = new mongoose.Schema({
             'Please add a valid email'
         ]
     },
+    gId: {
+        type: String,
+        select: false
+    },
+    photoUrl: {
+        type: String,
+    },
+    socketId: {
+        type: String
+    },
     age: Number,
     sex: {
         type: String,
@@ -52,6 +62,9 @@ const UserSchema = new mongoose.Schema({
         type: String,
         enum: ['admin', 'trainer', 'user'],
         default: 'user'
+    },
+    isOnline: {
+        type: Boolean
     },
     countDaysInClub: Number,
     rating: String,
@@ -105,6 +118,11 @@ UserSchema.pre('save', async function (next) {
     this.password = await bcrypt.hash(this.password, salt);
     next();
 });
+// Switch user online status
+UserSchema.pre('save', async function (next) {
+    this.isOnline = !!this.socketId;
+    next();
+});
 UserSchema.methods.getSignetJwtToken = function () {
     return jwt.sign({ id: this._id }, config_1.config.JWT_SECRET, {
         expiresIn: config_1.config.JWT_EXPIRE
@@ -115,7 +133,10 @@ UserSchema.methods.getRefreshSignetJwtToken = function () {
         expiresIn: config_1.config.JWT_REFRESH_EXPIRE
     });
 };
-UserSchema.methods.matchPassword = async function (enteredPassword) {
+UserSchema.methods.matchPassword = async function (enteredPassword, gId = false) {
+    if (gId) {
+        return enteredPassword === this.gId;
+    }
     return await bcrypt.compare(enteredPassword, this.password);
 };
 exports.default = mongoose.model('User', UserSchema);
