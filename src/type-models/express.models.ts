@@ -8,6 +8,7 @@ export interface Params {
     postId: string,
     limit: string
     page: string
+    userId: string
 }
 
 export interface Query {

@@ -18,6 +18,7 @@ const socket_io_1 = __importDefault(require("socket.io"));
 const clubs_routes_1 = __importDefault(require("./routes/clubs.routes"));
 const auth_routes_1 = __importDefault(require("./routes/auth.routes"));
 const user_routes_1 = __importDefault(require("./routes/user.routes"));
+const message_routes_1 = __importDefault(require("./routes/message.routes"));
 const socket_connect_1 = require("./socket/socket.connect");
 let userId = '';
 //Connect to database
@@ -44,6 +45,7 @@ app.use(express_fileupload_1.default());
 app.use('/api/v1/clubs', clubs_routes_1.default);
 app.use('/api/v1/auth', auth_routes_1.default);
 app.use('/api/v1/users', user_routes_1.default);
+app.use('/api/v1/messages', message_routes_1.default);
 // app.use('/api/v1/events')
 //FE rout
 // app.use('*',(req, res, next) => {

@@ -23,7 +23,7 @@ export interface MessageModel extends Document {
         text: string,
         time: string
     },
-    users: Schema.Types.ObjectId,
-    sender: UserModel,
+    users: Schema.Types.ObjectId[],
+    sender: Schema.Types.ObjectId,
     read: Date,
 }

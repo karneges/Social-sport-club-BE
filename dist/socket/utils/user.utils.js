@@ -22,7 +22,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getUserByToken = exports.getUserBySocketId = void 0;
+exports.getReceiversSocketId = exports.getUserByToken = exports.getUserBySocketId = void 0;
 const user_1 = __importDefault(require("../../models/user"));
 const jwt = __importStar(require("jsonwebtoken"));
 const config_1 = require("../../config/config");
@@ -38,5 +38,16 @@ exports.getUserByToken = async (token) => {
     let decoded;
     decoded = jwt.verify(token, config_1.config.JWT_SECRET);
     return user_1.default.findById(decoded.id).select('name email photoUrl isOnline');
+};
+exports.getReceiversSocketId = async (message) => {
+    const { sender, users } = message;
+    const receiversIds = users.filter(user => user !== sender);
+    try {
+        const socketIdsWithMongoId = await user_1.default.find({ _id: { '$in': [...receiversIds] } }).select('socketId');
+        return socketIdsWithMongoId.map(user => user.socketId);
+    }
+    catch (e) {
+        console.log(e);
+    }
 };
 //# sourceMappingURL=user.utils.js.map

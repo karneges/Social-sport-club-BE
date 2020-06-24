@@ -15,6 +15,7 @@ import socket from 'socket.io'
 import clubsRouter from './routes/clubs.routes'
 import authRouter from './routes/auth.routes'
 import usersRouter from './routes/user.routes'
+import messageRouter from './routes/message.routes'
 import { socketConnect } from './socket/socket.connect';
 
 let userId = ''
@@ -48,6 +49,7 @@ app.use(expressFileUpload());
 app.use('/api/v1/clubs', clubsRouter)
 app.use('/api/v1/auth', authRouter)
 app.use('/api/v1/users', usersRouter)
+app.use('/api/v1/messages', messageRouter)
 // app.use('/api/v1/events')
 
 //FE rout

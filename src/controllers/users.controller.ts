@@ -18,13 +18,3 @@ export const getUser = asyncHandler(async (req: Request<Params, any, any, Query>
         users
     })
 })
-// export const addMessageFromUser = asyncHandler(async (req: Request<Params, any, any, Query>, res: Response, next: NextFunction) => {
-//     let user = await User.findById(req.params.id).select('messages')
-//
-//
-//     user = await user.save()
-//     res.status(200).json({
-//         success: true,
-//         user
-//     })
-// })

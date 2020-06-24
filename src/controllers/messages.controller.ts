@@ -1,16 +1,17 @@
 import asyncHandler from '../middleware/async';
 import { NextFunction, Request, Response } from 'express';
-import { Params, Query } from '../type-models/express.models';
+import { AddUserToRequest, Params } from '../type-models/express.models';
 import Message, { MessageModel } from '../models/message';
 
 
 //@desc         Add event to club
-//@route        POST /api/v1/clubs/:id/events
+//@route        POST /api/v1/messages/:userId
 //@access       Private
-export const getMessages = asyncHandler(async (req: Request<Params, any, MessageModel>, res: Response, next: NextFunction) => {
-
+export const getMessages = asyncHandler(async (req: Request<Params, any, MessageModel> & AddUserToRequest, res: Response, next: NextFunction) => {
+    const { userId } = req.params
+    const {_id: mainUserId} = req.user
     // @ts-ignore
-    const messages = await Message.find({ users: { "$in": ['5ef23fcd820dc27d92ff1b61', '5eee6333fa068b651d8671da'] } })
+    const messages = await Message.find({ users: { "$eq": [userId, mainUserId] } })
         .sort({ updatedAt: -1 })
         .limit(20)
     console.log(messages)
@@ -21,5 +22,6 @@ export const getMessages = asyncHandler(async (req: Request<Params, any, Message
         messages
     })
 })
+
 
 
