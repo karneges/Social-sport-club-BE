@@ -1,16 +1,21 @@
 import { Socket } from 'socket.io';
-import Message from '../../models/message'
-import { MessageModel } from '../../models/message';
+import Message, { IMessage, MessageModel, NewMessageClientCreated } from '../../models/message'
 import { getReceiversSocketId } from '../utils/user.utils';
 
 
-export const newMessage = (socket: Socket) => async (newMessage: MessageModel) => {
+export const newMessage = (socket: Socket) => async (newMessage: NewMessageClientCreated) => {
     try {
+        console.log(newMessage)
+        let message: IMessage
+        if (newMessage.users.length === 1) {
+            message = { ...newMessage, receiver: newMessage.users[0] }
+        }
+        message = { ...newMessage, users: [...newMessage.users, newMessage.sender] }
         const receiversSocketIds = await getReceiversSocketId(newMessage)
         receiversSocketIds?.forEach(id => {
             socket.to(id).emit('newMessage', message)
         })
-        const message = await Message.create(newMessage)
+        await Message.create(message)
     } catch (e) {
         console.log(e)
     }

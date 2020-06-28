@@ -26,4 +26,22 @@ export interface MessageModel extends Document {
     users: Schema.Types.ObjectId[],
     sender: Schema.Types.ObjectId,
     read: Date,
+    receiver: Schema.Types.ObjectId,
+}
+export interface IMessage{
+    message: {
+        text: string
+    },
+    users: Schema.Types.ObjectId[],
+    sender: Schema.Types.ObjectId,
+    read?: Date,
+    receiver?: Schema.Types.ObjectId,
+}
+
+export interface NewMessageClientCreated {
+    message: {
+        text: string,
+    },
+    sender: Schema.Types.ObjectId,
+    users: Schema.Types.ObjectId[]
 }

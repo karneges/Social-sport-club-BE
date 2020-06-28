@@ -12,9 +12,8 @@ export const getMessages = asyncHandler(async (req: Request<Params, any, Message
     const {_id: mainUserId} = req.user
     // @ts-ignore
     const messages = await Message.find({ users: { "$eq": [userId, mainUserId] } })
-        .sort({ updatedAt: -1 })
-        .limit(20)
-    console.log(messages)
+        .sort({ updatedAt: 1 })
+        .limit(1000)
 
     res.status(201).json({
         status: 'success',

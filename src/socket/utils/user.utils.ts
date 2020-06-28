@@ -1,7 +1,7 @@
 import User from '../../models/user';
 import * as jwt from 'jsonwebtoken';
 import { config } from '../../config/config';
-import { MessageModel } from '../../models/message';
+import { MessageModel, NewMessageClientCreated } from '../../models/message';
 
 export const getUserBySocketId = async (socketId: string) => {
     try {
@@ -18,7 +18,7 @@ export const getUserByToken = async (token: string) => {
     return User.findById(decoded.id).select('name email photoUrl isOnline')
 }
 
-export const getReceiversSocketId = async (message: MessageModel): Promise<string[] | undefined> => {
+export const getReceiversSocketId = async (message: NewMessageClientCreated): Promise<string[] | undefined> => {
     const { sender, users } = message
     const receiversIds = users.filter(user => user !== sender)
     try {
