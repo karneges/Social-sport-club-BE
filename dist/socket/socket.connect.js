@@ -9,5 +9,6 @@ exports.socketConnect = (socket) => {
     socket.on('auth', socket_auth_controller_1.userAuthentication(socket));
     socket.on('disconnect', socket_disconnect_controller_1.userDisconnect(socket));
     socket.on('newMessage', socket_messages_controller_1.newMessage(socket));
+    socket.on('messageReade', socket_messages_controller_1.messageWasReade(socket));
 };
 //# sourceMappingURL=socket.connect.js.map

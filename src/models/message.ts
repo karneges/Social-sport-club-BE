@@ -1,6 +1,6 @@
 import { Schema, Document } from 'mongoose'
 import mongoose from "mongoose";
-import { UserModel } from './user';
+import User, { UserModel } from './user';
 
 
 const MessageSchema = new Schema({
@@ -10,7 +10,7 @@ const MessageSchema = new Schema({
         },
         users: [{ type: Schema.Types.ObjectId, ref: 'User', required: true }],
         sender: { type: Schema.Types.ObjectId, ref: 'User', required: true },
-        read: { type: Date }
+        read: { type: Boolean, default: false }
     },
     {
         timestamps: true
@@ -25,10 +25,11 @@ export interface MessageModel extends Document {
     },
     users: Schema.Types.ObjectId[],
     sender: Schema.Types.ObjectId,
-    read: Date,
+    read: boolean,
     receiver: Schema.Types.ObjectId,
 }
-export interface IMessage{
+
+export interface IMessage {
     message: {
         text: string
     },

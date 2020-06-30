@@ -20,3 +20,7 @@ export const newMessage = (socket: Socket) => async (newMessage: NewMessageClien
         console.log(e)
     }
 }
+export const messageWasReade = (socket: Socket) => async (messageId: string) => {
+    console.log('message reade')
+    const message = await Message.findByIdAndUpdate(messageId, { read: true }, { runValidators: true, new: true })
+}
