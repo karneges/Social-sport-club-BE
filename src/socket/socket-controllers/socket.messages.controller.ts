@@ -1,21 +1,24 @@
 import { Socket } from 'socket.io';
-import Message, { IMessage, MessageModel, NewMessageClientCreated } from '../../models/message'
+import Message, { MessageModel, NewMessageClientCreated } from '../../models/message'
 import { getReceiversSocketId } from '../utils/user.utils';
 
 
 export const newMessage = (socket: Socket) => async (newMessage: NewMessageClientCreated) => {
     try {
-        console.log(newMessage)
-        let message: IMessage
-        if (newMessage.users.length === 1) {
-            message = { ...newMessage, receiver: newMessage.users[0] }
-        }
-        message = { ...newMessage, users: [...newMessage.users, newMessage.sender] }
         const receiversSocketIds = await getReceiversSocketId(newMessage)
+        const createdMessage = await Message.create(newMessage)
+        const message = await createdMessage.populate({
+            path: 'sender',
+            select: 'name photoUrl'
+        }).execPopulate()
+
+        let messageMap: { [key: string]: MessageModel[] }
+        if (typeof message.sender !== "string") {
+            messageMap = { [message.sender._id]: [message] }
+        }
         receiversSocketIds?.forEach(id => {
-            socket.to(id).emit('newMessage', message)
+            socket.to(id).emit('newMessage', messageMap)
         })
-        await Message.create(message)
     } catch (e) {
         console.log(e)
     }

@@ -1,8 +1,10 @@
 import { UserModel } from "../models/user";
 
-export interface Params {
+export interface BaseParamsInterface {
     [key: string]: string
+}
 
+export interface Params extends BaseParamsInterface {
     id: string
     eventId: string
     postId: string,

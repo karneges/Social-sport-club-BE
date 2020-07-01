@@ -1,6 +1,6 @@
 import { Schema, Document } from 'mongoose'
 import mongoose from "mongoose";
-import User, { UserModel } from './user';
+import User, { IUser, UserModel } from './user';
 
 
 const MessageSchema = new Schema({
@@ -23,8 +23,8 @@ export interface MessageModel extends Document {
         text: string,
         time: string
     },
-    users: Schema.Types.ObjectId[],
-    sender: Schema.Types.ObjectId,
+    users: Schema.Types.ObjectId[] | UserModel[],
+    sender: string | Partial<UserModel>,
     read: boolean,
     receiver: Schema.Types.ObjectId,
 }
@@ -33,16 +33,16 @@ export interface IMessage {
     message: {
         text: string
     },
-    users: Schema.Types.ObjectId[],
-    sender: Schema.Types.ObjectId,
+    users: string[],
+    sender: string,
     read?: Date,
-    receiver?: Schema.Types.ObjectId,
+    receiver?: string,
 }
 
 export interface NewMessageClientCreated {
     message: {
         text: string,
     },
-    sender: Schema.Types.ObjectId,
-    users: Schema.Types.ObjectId[]
+    sender: string,
+    users: string[]
 }

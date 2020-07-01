@@ -130,7 +130,14 @@ UserSchema.methods.matchPassword = async function (enteredPassword: string, gId:
 
 export default mongoose.model<UserModel>('User', UserSchema)
 
-export interface UserModel extends Document {
+export interface UserModel extends Document, IUser {
+
+    getSignetJwtToken: () => string
+    getRefreshSignetJwtToken: () => string
+    matchPassword: (password: string, gId?: boolean) => Promise<boolean>
+}
+
+export interface IUser {
     name: string
     email: string
     age: number
@@ -151,8 +158,5 @@ export interface UserModel extends Document {
     resetPasswordExpire: Date
     createdAt: Date
     isOnline: boolean
-    getSignetJwtToken: () => string
-    getRefreshSignetJwtToken: () => string
-    matchPassword: (password: string, gId?: boolean) => Promise<boolean>
 }
 
