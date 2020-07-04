@@ -1,7 +1,7 @@
 import { Router } from 'express'
 import { getAllUsers, getUser } from '../controllers/users.controller';
 import { protect } from '../middleware/auth';
-import { getMessages } from '../controllers/messages.controller';
+import { getMessages } from '../controllers/messages/messages.controller';
 
 const router = Router()
 

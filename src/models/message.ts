@@ -35,7 +35,7 @@ export interface IMessage {
     },
     users: string[],
     sender: string,
-    read?: Date,
+    read?: string,
     receiver?: string,
 }
 
@@ -46,3 +46,22 @@ export interface NewMessageClientCreated {
     sender: string,
     users: string[]
 }
+
+export class MessagesMap {
+    [key: string]: EntityFromMessageMap
+}
+
+export interface EntityFromMessageMap {
+    _id: string
+    messages: MessageModel[]
+    countNoReadMessages: number
+}
+
+export interface AggregatedMessages {
+    _id: string,
+    count: number,
+    messages: MessageModel[]
+}
+
+
+

@@ -1,7 +1,7 @@
 import { UserModel } from "../models/user";
 
 export interface BaseParamsInterface {
-    [key: string]: string
+    [key: string]: any
 }
 
 export interface Params extends BaseParamsInterface {

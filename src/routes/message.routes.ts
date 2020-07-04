@@ -1,5 +1,5 @@
 import { Router } from 'express'
-import { getMessages, getNoReadMessagesFromUser } from '../controllers/messages.controller';
+import { getMessages, getNoReadMessagesFromUser } from '../controllers/messages/messages.controller';
 import { protect } from '../middleware/auth';
 
 const router = Router()
