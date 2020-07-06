@@ -42,11 +42,6 @@ export const messagesAggregate = async (mainUserId: Types.ObjectId, trgetUserId?
                         },
                     }
                 },
-                // {
-                //     $sort: { companionId: 1 }
-                // },
-
-                // group by companionId and add count field
                 {
                     $group: {
                         _id: '$companionId',
@@ -66,7 +61,7 @@ export const messagesAggregate = async (mainUserId: Types.ObjectId, trgetUserId?
                         messages: { $push: "$$ROOT" }
                     }
                 },
-            // delete technical fields
+                // delete technical fields
                 {
                     $project: {
                         'messages.companionId': 0,
@@ -77,20 +72,20 @@ export const messagesAggregate = async (mainUserId: Types.ObjectId, trgetUserId?
                 {
                     $project: {
                         'messages': {
-                            '$slice': ['$messages', 20]
+                            '$slice': ['$messages', -10]
                         },
                         countNoReadMessages: 1,
                     }
                 }
             ]
         )
-        .sort({ createdAt: -1 })
     console.log(messagesArray)
     // Populate Sender
     const messageArrayWithPopulationSender = await Message.populate<EntityFromMessageMap[]>(messagesArray, {
         path: 'messages.sender',
         model: 'User',
         select: 'name photoUrl'
-    }).then(messagesArray => messagesArray.reverse())
+    })
+    // .then(messagesArray => messagesArray.reverse())
     return convertArrayToObject(messageArrayWithPopulationSender, '_id')
 }
