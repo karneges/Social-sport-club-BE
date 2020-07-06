@@ -12,9 +12,9 @@ export const newMessage = (socket: Socket) => async (newMessage: NewMessageClien
             select: 'name photoUrl'
         }).execPopulate()
 
-        let messageMap: { [key: string]: MessageModel[] }
+        let messageMap: { [key: string]: { messages: MessageModel[] } }
         if (typeof message.sender !== "string") {
-            messageMap = { [message.sender._id]: [message] }
+            messageMap = { [message.sender._id]: { messages: [message] } }
         }
         receiversSocketIds?.forEach(id => {
             socket.to(id).emit('newMessage', messageMap)

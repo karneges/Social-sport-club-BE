@@ -1,8 +1,8 @@
 import asyncHandler from '../../middleware/async';
 import { NextFunction, Request, Response } from 'express';
 import { AddUserToRequest, Params } from '../../type-models/express.models';
-import Message, { AggregatedMessages, EntityFromMessageMap, MessageModel, MessagesMap } from '../../models/message';
-import { convertArrayToObject } from '../../socket/utils/convert-array-to-objects';
+import { MessageModel } from '../../models/message';
+import {Types} from 'mongoose'
 import { messagesAggregate } from './utils/messageAggregater';
 
 
@@ -13,8 +13,7 @@ export const getMessages = asyncHandler(async (req: Request<Params, any, Message
     const { userId } = req.params
     const { _id: mainUserId } = req.user
 
-    const messageMap = await messagesAggregate(mainUserId.toString(), userId.toString())
-    console.log()
+    const messageMap = await messagesAggregate(mainUserId, Types.ObjectId(userId))
     res.status(201).json({
         status: 'success',
         messages: messageMap
