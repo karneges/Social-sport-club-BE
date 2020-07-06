@@ -77,7 +77,7 @@ export const messagesAggregate = async (mainUserId: Types.ObjectId, trgetUserId?
                 {
                     $project: {
                         'messages': {
-                            '$slice': ['$messages', 4]
+                            '$slice': ['$messages', 20]
                         },
                         countNoReadMessages: 1,
                     }
