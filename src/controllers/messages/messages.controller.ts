@@ -2,8 +2,9 @@ import asyncHandler from '../../middleware/async';
 import { NextFunction, Request, Response } from 'express';
 import { AddUserToRequest, Params } from '../../type-models/express.models';
 import { MessageModel } from '../../models/message';
-import {Types} from 'mongoose'
 import { messagesAggregate } from './utils/messageAggregater';
+import { Schema, Types } from 'mongoose';
+import { markMessagesAsRead } from './utils/markAsReadMessages';
 
 
 //@desc         Add event to club
@@ -20,6 +21,7 @@ export const getMessages = asyncHandler(async (req: Request<Params, any, Message
     })
 })
 
+
 //@desc         Add event to club
 //@route        POST /api/v1/messages/noread
 //@access       Private
@@ -32,6 +34,15 @@ export const getNoReadMessagesFromUser = asyncHandler(async (req: Request<Params
         messages: messageMap
     })
 })
+//@desc         Add event to club
+//@route        POST /api/v1/messages/markasread/:userId
+//@access       Private
+export const markAsReadMessages = asyncHandler(async (req: Request<Params, any, MessageModel> & AddUserToRequest, res: Response, next: NextFunction) => {
+    const { userId } = req.params
+    const { _id: mainUserId } = req.user
+    await markMessagesAsRead(mainUserId, userId)
 
-
-
+    res.status(201).json({
+        status: 'success',
+    })
+})

@@ -1,6 +1,6 @@
 import Message from '../../../models/message';
 
-export const markForRead = async (mainUserId: string, companionId: string) => {
+export const markMessagesAsRead = async (mainUserId: string, companionId: string) => {
     //     find all no reade messages
     //    update them
     const messages = await Message.updateMany(

@@ -1,7 +1,7 @@
 import { MessageModel, MessagesMap } from '../../models/message';
 import { UserModel } from '../../models/user';
 
-export const convertMessageToMap = (messages: MessageModel[], mainUserId: string, noReadMessages: { _id: string, count: number }[]): MessagesMap => {
+export const convertMessageToMap = (messages: MessageModel[], mainUserId: string): MessagesMap => {
     let messageMap: MessagesMap = {}
 
     messages.forEach((message) => {
@@ -14,6 +14,5 @@ export const convertMessageToMap = (messages: MessageModel[], mainUserId: string
             messageMap[key].messages = [message]
         }
     })
-    noReadMessages.forEach(message => messageMap[message._id].countNoReadMessages = message.count)
     return messageMap
 }

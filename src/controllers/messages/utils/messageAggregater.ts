@@ -12,7 +12,6 @@ export const messagesAggregate = async (mainUserId: Types.ObjectId, trgetUserId?
     if (!trgetUserId) {
         matchConfig.users = { "$all": [mainUserId] }
     }
-    console.log(matchConfig)
     let messagesArray = await Message
         .aggregate<{ _id: string, countNoReadMessages: number, messages: MessageModel[] }>([
                 // find all messages from main user
@@ -27,7 +26,7 @@ export const messagesAggregate = async (mainUserId: Types.ObjectId, trgetUserId?
                         sender: 1,
                         createdAt: 1,
                         updatedAt: 1,
-                        //find companion id
+                        //find companion _id
                         companionId: {
                             $arrayElemAt: [
                                 {
@@ -86,6 +85,5 @@ export const messagesAggregate = async (mainUserId: Types.ObjectId, trgetUserId?
         model: 'User',
         select: 'name photoUrl'
     })
-    // .then(messagesArray => messagesArray.reverse())
     return convertArrayToObject(messageArrayWithPopulationSender, '_id')
 }

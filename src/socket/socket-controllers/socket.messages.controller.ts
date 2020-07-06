@@ -1,7 +1,7 @@
 import { Socket } from 'socket.io';
 import Message, { MessageModel, NewMessageClientCreated } from '../../models/message'
 import { getReceiversSocketId } from '../utils/user.utils';
-import { markForRead } from '../../controllers/messages/utils/markForReadMessages';
+import { markMessagesAsRead } from '../../controllers/messages/utils/markAsReadMessages';
 
 
 export const newMessage = (socket: Socket) => async (newMessage: NewMessageClientCreated) => {
@@ -13,7 +13,7 @@ export const newMessage = (socket: Socket) => async (newMessage: NewMessageClien
             select: 'name photoUrl'
         }).execPopulate()
 
-         await markForRead(newMessage.sender, newMessage.users.find(el => el !== newMessage.sender) as string)
+         await markMessagesAsRead(newMessage.sender, newMessage.users.find(el => el !== newMessage.sender) as string)
 
         let messageMap: { [key: string]: { messages: MessageModel[] } }
         if (typeof message.sender !== "string") {
