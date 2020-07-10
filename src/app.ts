@@ -10,13 +10,15 @@ import path from 'path';
 import seederRun from "./seeder";
 import http from 'http'
 import socket from 'socket.io'
+import { socketConnect } from './socket/socket.connect';
 
-
+//Import Routes
 import clubsRouter from './routes/clubs.routes'
 import authRouter from './routes/auth.routes'
 import usersRouter from './routes/user.routes'
 import messageRouter from './routes/message.routes'
-import { socketConnect } from './socket/socket.connect';
+//Routes<Starava>
+import stravaRoutes from './third-party-services/strava/routes/strava.routes'
 
 let userId = ''
 //Connect to database
@@ -46,10 +48,12 @@ app.use(expressFileUpload());
 // app.use('/', express.static(path.join(__dirname ,'..','static/angular')));
 
 //Routes
+app.use('/api/v1/strava',stravaRoutes)
 app.use('/api/v1/clubs', clubsRouter)
 app.use('/api/v1/auth', authRouter)
 app.use('/api/v1/users', usersRouter)
 app.use('/api/v1/messages', messageRouter)
+// Routes<Strava>
 // app.use('/api/v1/events')
 
 //FE rout

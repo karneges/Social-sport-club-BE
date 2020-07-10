@@ -78,7 +78,6 @@ export const messagesAggregate = async (mainUserId: Types.ObjectId, trgetUserId?
                 }
             ]
         )
-    console.log(messagesArray)
     // Populate Sender
     const messageArrayWithPopulationSender = await Message.populate<EntityFromMessageMap[]>(messagesArray, {
         path: 'messages.sender',

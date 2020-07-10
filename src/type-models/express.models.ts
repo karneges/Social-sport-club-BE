@@ -2,20 +2,26 @@ import { UserModel } from "../models/user";
 
 export interface BaseParamsInterface {
     [key: string]: any
+    id?: string
+    limit?: string
+    page?: string
+    userId?: string
 }
 
 export interface Params extends BaseParamsInterface {
-    id: string
     eventId: string
     postId: string,
-    limit: string
-    page: string
-    userId: string
 }
 
-export interface Query {
+interface BaseQueryInterface {
     limit: string
     page: string
+}
+export interface Query extends BaseQueryInterface{
+
+}
+export interface StravaQuery extends BaseQueryInterface{
+    code:string
 }
 
 export interface AdvancedResult {

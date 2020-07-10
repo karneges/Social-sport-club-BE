@@ -51,6 +51,10 @@ const UserSchema = new mongoose.Schema({
     rating: String,
     // TODO create Training Model
     training: String,
+    strava: {
+        type: Schema.Types.ObjectId,
+        ref: 'Strava'
+    },
     invites: [
         {
             from: {
@@ -157,6 +161,7 @@ export interface IUser {
     resetPasswordToken: string
     resetPasswordExpire: Date
     createdAt: Date
-    isOnline: boolean
+    isOnline: boolean,
+    strava: mongoose.Types.ObjectId
 }
 

@@ -3,7 +3,7 @@ import { NextFunction, Request, Response } from 'express';
 import { AddUserToRequest, Params } from '../../type-models/express.models';
 import { MessageModel } from '../../models/message';
 import { messagesAggregate } from './utils/messageAggregater';
-import { Schema, Types } from 'mongoose';
+import { Types } from 'mongoose';
 import { markMessagesAsRead } from './utils/markAsReadMessages';
 
 
@@ -40,7 +40,7 @@ export const getNoReadMessagesFromUser = asyncHandler(async (req: Request<Params
 export const markAsReadMessages = asyncHandler(async (req: Request<Params, any, MessageModel> & AddUserToRequest, res: Response, next: NextFunction) => {
     const { userId } = req.params
     const { _id: mainUserId } = req.user
-    await markMessagesAsRead(mainUserId, userId)
+    await markMessagesAsRead(mainUserId, userId!)
 
     res.status(201).json({
         status: 'success',

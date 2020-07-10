@@ -70,6 +70,10 @@ const UserSchema = new mongoose.Schema({
     rating: String,
     // TODO create Training Model
     training: String,
+    strava: {
+        type: mongoose_1.Schema.Types.ObjectId,
+        ref: 'Strava'
+    },
     invites: [
         {
             from: {
