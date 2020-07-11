@@ -1,5 +1,4 @@
 import * as mongoose from 'mongoose';
-import { Mongoose } from 'mongoose';
 
 const StravaSchena = new mongoose.Schema(
     {
@@ -19,8 +18,8 @@ const StravaSchena = new mongoose.Schema(
             country: String,
             sex: String,
             premium: Boolean,
-            created_at: String,
-            updated_at: String,
+            created_at: Date,
+            updated_at: Date,
             badge_type_id: Number,
             profile_medium: String,
             profile: String,
@@ -30,18 +29,12 @@ const StravaSchena = new mongoose.Schema(
             friend_count: Number,
             mutual_friend_count: Number,
             athlete_type: Number,
-            date_preference: String,
+            date_preference: Date,
             measurement_preference: String,
             clubs: [],
             ftp: String,
             weight: Number,
         },
-        training: [
-            {
-                type: mongoose.Schema.Types.ObjectId,
-                ref: 'StravaTrain'
-            }
-        ]
     }
 )
 export default mongoose.model<StravaModel>('Strava', StravaSchena)
@@ -78,7 +71,6 @@ export interface StravaBaseModel {
         clubs: [],
         ftp: string,
         weight: number,
-        training: mongoose.Types.ObjectId[]
     }
 }
 

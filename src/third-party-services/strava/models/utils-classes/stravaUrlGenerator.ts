@@ -1,4 +1,4 @@
-import { STRAVA_CONFIGS } from '../starava.configs';
+import { STRAVA_CONFIGS } from '../../starava.configs';
 
 export class StravaUrlGenerator {
     private url = STRAVA_CONFIGS.oAuthUrl

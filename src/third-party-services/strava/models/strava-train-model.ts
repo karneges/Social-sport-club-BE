@@ -2,6 +2,10 @@ import * as mongoose from 'mongoose';
 
 const StravaTrainSchema = new mongoose.Schema(
     {
+        user: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'User'
+        },
         resource_state: Number,
         name: String,
         distance: Number,
@@ -13,8 +17,8 @@ const StravaTrainSchema = new mongoose.Schema(
         id: Number,
         external_id: String,
         upload_id: Number,
-        start_date: String,
-        start_date_local: String,
+        start_date: Date,
+        start_date_local: Date,
         start_latlng: {
             type: [Number],
             required: true
@@ -61,7 +65,14 @@ const StravaTrainSchema = new mongoose.Schema(
     })
 export default mongoose.model<StravaTrainModel>('Strava-Train', StravaTrainSchema)
 
-export interface StravaTrainBaseModelModel {
+export interface StravaTrainBaseModel extends StravaTrainResponseModel{
+    user: mongoose.Schema.Types.ObjectId | string
+}
+
+export interface StravaTrainModel extends StravaTrainBaseModel, mongoose.Document {
+
+}
+export interface StravaTrainResponseModel {
     resource_state: number,
     name: string,
     distance: number,
@@ -72,7 +83,7 @@ export interface StravaTrainBaseModelModel {
     workout_type: string,
     external_id: string,
     upload_id: number,
-    start_date: string,
+    start_date: Date,
     start_date_local: string,
     start_latlng: {
         type: String,
@@ -119,9 +130,5 @@ export interface StravaTrainBaseModelModel {
     total_photo_count: number,
     has_kudoed: boolean,
     suffer_score: number
-}
-
-export interface StravaTrainModel extends StravaTrainBaseModelModel, mongoose.Document {
-
 }
 

@@ -1,8 +1,8 @@
-import { StravaBaseModel, StravaModel } from './stravaModel';
-import { StravaToken } from '../utils/getTokenStatus';
+import { StravaBaseModel, StravaModel } from '../stravaModel';
+import { StravaToken } from '../../utils/getTokenStatus';
 import axios from 'axios';
 import { StravaUrlGenerator } from './stravaUrlGenerator';
-import { fieldSetter } from '../../../utils/utils';
+import { fieldSetter } from '../../../../utils/utils';
 
 export class StravaTokenFactory extends StravaToken {
 
