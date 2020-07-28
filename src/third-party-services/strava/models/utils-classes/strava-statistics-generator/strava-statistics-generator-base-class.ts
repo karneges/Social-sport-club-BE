@@ -1,13 +1,16 @@
 import { StravaActivitiesBodyRequest } from '../../http.models';
-import { StravaStatisticConfig, TrainingTypes } from './models/strava-statistics-models';
+import { StravaStatisticConfig, TrainingValues } from './models/strava-statistics-models';
+import  mongoose from 'mongoose'
 
 export class StravaStatisticsGeneratorBaseClass {
     private sportTypes = ['Run', 'NordicSki', 'Ride']
     private maxMinAvgSum = ['max', 'min', 'avg', 'sum']
+    private readonly userIds: mongoose.Types.ObjectId[]
     summableFields = ['distance', 'total_elevation_gain', 'elapsed_time', 'average_watts', 'kilojoules']
     protected config: StravaStatisticConfig<Date>
-    constructor(protected userId: string,
-                { bottomBarerDate, topBarerDate, fields }: StravaActivitiesBodyRequest) {
+
+    constructor(userId: mongoose.Types.ObjectId,
+                { bottomBarerDate, topBarerDate, fields, secondaryUsers }: StravaActivitiesBodyRequest) {
 
         this.config = {
             date: {
@@ -16,7 +19,12 @@ export class StravaStatisticsGeneratorBaseClass {
             },
             fields
         }
+        this.userIds = [userId]
+        if (secondaryUsers) {
+            this.userIds.push(...secondaryUsers.map(el => mongoose.Types.ObjectId(el)))
+        }
     }
+
     protected getProjectConfigForSportTypesStatistics() {
         if (!this.config.fields) {
             return {
@@ -90,7 +98,7 @@ export class StravaStatisticsGeneratorBaseClass {
     }
 
     protected getSportTypesFieldsFromProjectPipeLine() {
-        return this.config.fields.map<{ sportValueName: TrainingTypes, value: any }>((fieldName) => {
+        return this.config.fields.map<{ sportValueName: TrainingValues, value: any }>((fieldName) => {
             if (fieldName in this.summableFields) {
                 return {
                     sportValueName: fieldName,
@@ -107,8 +115,9 @@ export class StravaStatisticsGeneratorBaseClass {
 
 
     protected getMatchConfig() {
+        console.log(this.userIds)
         return {
-            user: this.userId,
+            user: { $in: this.userIds },
             start_date: {
                 $gt: this.config.date.bottomBarerDate,
                 $lt: this.config.date.topBarerDate

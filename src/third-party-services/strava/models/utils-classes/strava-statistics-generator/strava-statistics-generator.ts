@@ -1,11 +1,12 @@
 import StravaTrain from '../../strava-train-model';
 import { StravaActivitiesBodyRequest } from '../../http.models';
 import { StravaStatisticsGeneratorBaseClass } from './strava-statistics-generator-base-class';
-import { TrainingTypes } from './models/strava-statistics-models';
+import { SportTypes, TrainingValues } from './models/strava-statistics-models';
+import * as mongoose from 'mongoose';
 
 export class StravaStatisticsGenerator extends StravaStatisticsGeneratorBaseClass {
 
-    constructor(userId: string, config: StravaActivitiesBodyRequest) {
+    constructor(userId: mongoose.Types.ObjectId, config: StravaActivitiesBodyRequest) {
         super(userId, config)
     }
 
@@ -58,6 +59,7 @@ export class StravaStatisticsGenerator extends StravaStatisticsGeneratorBaseClas
                         d: { $dayOfMonth: "$start_date" },
                         m: { $month: "$start_date" },
                         y: { $year: "$start_date" },
+                        user: '$user',
                         type: '$type'
                     },
                     doc: { $push: '$$ROOT' },
@@ -77,22 +79,48 @@ export class StravaStatisticsGenerator extends StravaStatisticsGeneratorBaseClas
                     _id: 0,
                     type: '$type',
                     date: '$date',
+                    user: '$_id.user',
                     trainingValues: this.getSportTypesFieldsFromProjectPipeLine()
                 }
             },
             {
                 $group: {
-                    _id: '$type',
+                    _id: {
+                        type: '$type',
+                        user: '$user'
+                    },
                     trainingsValueBySportType: { $push: '$$CURRENT' }
                 }
             },
             {
-                $addFields: { type: "$_id" }
+                $addFields: {
+                    type: "$_id.type",
+                    user: '$_id.user'
+                }
             },
             {
                 $project: {
                     _id: 0,
-                    'trainingsValueBySportType.type': 0
+                    'trainingsValueBySportType.type': 0,
+                    'trainingsValueBySportType.user': 0
+                }
+            },
+            {
+                $group: {
+                    _id: '$user',
+                    userActivities: { $push: '$$ROOT' }
+                }
+            },
+            {
+                $project: {
+                    'userActivities.user': 0
+                }
+            },
+            {
+                $project: {
+                    _id: 0,
+                    user: '$_id',
+                    userActivities: '$userActivities',
                 }
             }
         ])
@@ -100,14 +128,18 @@ export class StravaStatisticsGenerator extends StravaStatisticsGeneratorBaseClas
 }
 
 export interface ActivitiesTrainValuesByDayRange {
-    type: TrainingTypes,
-    trainingsValueBySportType: {
-        date: Date,
-        trainingValues: {
-            sportValueName: TrainingTypes,
-            value: number
+    user: string
+    userActivities: {
+        type: SportTypes,
+        trainingsValueBySportType: {
+            date: Date,
+            trainingValues: {
+                sportValueName: TrainingValues,
+                value: number
+            }[]
         }[]
     }[]
+
 
 }
 

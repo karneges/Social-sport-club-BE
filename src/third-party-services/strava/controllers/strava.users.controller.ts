@@ -121,6 +121,22 @@ export const getActivitiesTrainValuesByDayRange = asyncHandler(
         const activities = await new StravaStatisticsGenerator(user._id, req.body).getActivitiesTrainValuesByDayRange()
         res.status(200).json({
             success: true,
+            count: activities.map(el => (
+                    {
+                        user: el.user,
+                        activities: el.userActivities
+                            .map(el => (
+                                {
+                                    name: el.type,
+                                    count: el.trainingsValueBySportType.length,
+                                }
+                            )),
+                        totalActivitiesSum: el.userActivities.reduce((acc,next)=>{
+                            return acc += next.trainingsValueBySportType.length
+                        },0)
+                    }
+                )
+            ),
             activities: activities,
         });
     })
@@ -155,14 +171,14 @@ export const getAthlete = asyncHandler(
 //@desc         Register New Strava User
 //@route        POST /api/v1/strava/activities-all
 //@access       Public
-export const getAllUserActivities= asyncHandler(
+export const getAllUserActivities = asyncHandler(
     async (
         req: Request<StravaAuthParams, any, any, StravaQuery> & AddUserToRequest,
         res: Response,
         next: NextFunction
     ) => {
 
-       const userWithStrava = await StravaService.getAllUserActivities(req.user.strava, req.user._id)
+        const userWithStrava = await StravaService.getAllUserActivities(req.user.strava, req.user._id)
         res.status(200).json({
             success: true,
             user: userWithStrava

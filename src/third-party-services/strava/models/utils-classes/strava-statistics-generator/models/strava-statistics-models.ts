@@ -1,10 +1,9 @@
-
 export interface StravaStatisticConfig<T extends string | Date> {
     date: {
         bottomBarerDate: T,
         topBarerDate: T
     },
-    fields: TrainingTypes[]
+    fields: TrainingValues[]
 }
 
 export interface ActivitiesStatisticValues {
@@ -15,7 +14,7 @@ export interface ActivitiesStatisticValues {
     sportType: string
 }
 
-export type TrainingTypes = 'elapsed_time'
+export type TrainingValues = 'elapsed_time'
     | 'distance'
     | 'moving_time'
     | 'total_elevation_gain'
@@ -24,3 +23,4 @@ export type TrainingTypes = 'elapsed_time'
     | 'max_speed'
     | 'average_watts'
     | 'kilojoules'
+export type SportTypes = 'Run' | 'Ride' | 'NordicSki' | 'Walk'
