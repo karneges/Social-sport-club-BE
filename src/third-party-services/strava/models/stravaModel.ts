@@ -1,3 +1,4 @@
+import User from '../../../models/user'
 import * as mongoose from 'mongoose';
 
 const StravaSchena = new mongoose.Schema(
@@ -37,6 +38,9 @@ const StravaSchena = new mongoose.Schema(
         },
     }
 )
+StravaSchena.pre('remove', async function () {
+    await User.findOneAndUpdate({ strava: this._id }, { strava: undefined })
+})
 export default mongoose.model<StravaModel>('Strava', StravaSchena)
 
 export interface StravaBaseModel {

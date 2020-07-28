@@ -53,7 +53,10 @@ export const login = asyncHandler(async (req: Request<Params>, res: Response, ne
 //@route        GET /api/v1/auth/me
 //@access       Public
 export const getMe = asyncHandler(async (req: Request<Params> & AddUserToRequest, res: Response, next: NextFunction) => {
-    const user = req.user
+    const user = await req.user.populate({
+        path:'strava',
+        select: 'athlete'
+    }).execPopulate()
     res.status(200).json({
         success: true,
         user

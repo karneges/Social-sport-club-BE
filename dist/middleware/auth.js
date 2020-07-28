@@ -47,6 +47,10 @@ exports.protect = async_1.default(async (req, res, next) => {
             decoded = jwt.verify(token, config_1.config.JWT_SECRET);
         }
         const user = await user_1.default.findById(decoded.id);
+        //     .populate({
+        //     path: 'strava',
+        //     select: 'athlete'
+        // });
         if (user) {
             req.user = user;
         }

@@ -46,7 +46,10 @@ exports.login = async_1.default(async (req, res, next) => {
 //@route        GET /api/v1/auth/me
 //@access       Public
 exports.getMe = async_1.default(async (req, res, next) => {
-    const user = req.user;
+    const user = await req.user.populate({
+        path: 'strava',
+        select: 'athlete'
+    }).execPopulate();
     res.status(200).json({
         success: true,
         user

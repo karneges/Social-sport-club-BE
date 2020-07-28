@@ -25,7 +25,11 @@ export const protect = asyncHandler(async (req: Request<Params> & AddUserToReque
             decoded = jwt.verify(token, config.JWT_SECRET) as { id: string };
         }
 
-        const user = await User.findById(decoded.id);
+        const user = await User.findById(decoded.id)
+        //     .populate({
+        //     path: 'strava',
+        //     select: 'athlete'
+        // });
         if (user) {
             req.user = user
         }

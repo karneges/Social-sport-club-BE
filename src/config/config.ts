@@ -12,9 +12,9 @@ export const config = {
   FILE_UPLOAD_PATH: '/home/nikita/learnFolder/nodeJS/devcamper_project/public/uploads',
 
   JWT_SECRET: 'csdcdscsdc34234234sdasdasd',
-  JWT_EXPIRE: '36000s',
+  JWT_EXPIRE: '3600000s',
   JWT_REFRESH_SECRET: 'csdcdscsasxasxasx3423421134sdasdasd',
-  JWT_REFRESH_EXPIRE: '12h',
+  JWT_REFRESH_EXPIRE: '30d',
 }
 
 
