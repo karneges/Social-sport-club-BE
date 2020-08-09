@@ -118,25 +118,10 @@ export const getActivitiesTrainValuesByDayRange = asyncHandler(
         next: NextFunction
     ) => {
         const user = req.user
+        console.log(req.body)
         const activities = await new StravaStatisticsGenerator(user._id, req.body).getActivitiesTrainValuesByDayRange()
         res.status(200).json({
             success: true,
-            count: activities.map(el => (
-                    {
-                        user: el.user,
-                        activities: el.userActivities
-                            .map(el => (
-                                {
-                                    name: el.type,
-                                    count: el.trainingsValueBySportType.length,
-                                }
-                            )),
-                        totalActivitiesSum: el.userActivities.reduce((acc,next)=>{
-                            return acc += next.trainingsValueBySportType.length
-                        },0)
-                    }
-                )
-            ),
             activities: activities,
         });
     })

@@ -77,43 +77,94 @@ export class StravaStatisticsGenerator extends StravaStatisticsGeneratorBaseClas
             {
                 $project: {
                     _id: 0,
-                    type: '$type',
-                    date: '$date',
+                    type: 1,
+                    date: 1,
                     user: '$_id.user',
                     trainingValues: this.getSportTypesFieldsFromProjectPipeLine()
+                }
+            },
+            {
+                $unwind: '$trainingValues'
+            },
+            {
+                $project: {
+                    _id: 0,
+                    type: 1,
+                    date: 1,
+                    user: 1,
+                    trainingDimensionName: '$trainingValues.trainingDimensionName',
+                    'trainingValues.date': '$date',
+                    'trainingValues.value': '$trainingValues.value',
                 }
             },
             {
                 $group: {
                     _id: {
                         type: '$type',
-                        user: '$user'
+                        user: '$user',
+                        trainingDimensionName: '$trainingDimensionName'
                     },
-                    trainingsValueBySportType: { $push: '$$CURRENT' }
+                    valuesByTrainingDimensionName: { $push: '$$CURRENT' }
+                }
+            },
+            {
+                $project: {
+                    valuesByTrainingDimensionName: '$valuesByTrainingDimensionName.trainingValues'
                 }
             },
             {
                 $addFields: {
                     type: "$_id.type",
-                    user: '$_id.user'
+                    user: '$_id.user',
+                    trainingDimensionName: '$_id.trainingDimensionName'
                 }
             },
             {
                 $project: {
                     _id: 0,
                     'trainingsValueBySportType.type': 0,
-                    'trainingsValueBySportType.user': 0
+                    'trainingsValueBySportType.user': 0,
+                    'trainingsValueBySportType.sportValueName': 0,
                 }
             },
             {
                 $group: {
-                    _id: '$user',
-                    userActivities: { $push: '$$ROOT' }
+                    _id: { type: '$type', user: '$user' },
+                    userActivities: { $push: '$$CURRENT' }
                 }
             },
             {
                 $project: {
-                    'userActivities.user': 0
+                    'userActivities.user': 0,
+                    'userActivities.type': 0
+                }
+            },
+            {
+                $addFields: {
+                    type: "$_id.type",
+                    user: '$_id.user',
+                }
+            },
+            {
+                $project: {
+                    userActivities: [
+                        {
+                            type: '$type',
+                            valuesByType: '$userActivities',
+                        }
+                    ],
+                }
+            },
+            {
+                $unwind: '$userActivities'
+            },
+            {
+                $sort: {'userActivities.type':1}
+            },
+            {
+                $group: {
+                    _id: '$_id.user',
+                    userActivities: { $push: '$$ROOT.userActivities' },
                 }
             },
             {
@@ -131,15 +182,10 @@ export interface ActivitiesTrainValuesByDayRange {
     user: string
     userActivities: {
         type: SportTypes,
-        trainingsValueBySportType: {
-            date: Date,
-            trainingValues: {
-                sportValueName: TrainingValues,
-                value: number
-            }[]
+        valuesByType: {
+            valuesByTrainingDimensionName: { date: string, value: number }[],
+            trainingDimensionName: string
         }[]
     }[]
-
-
 }
 

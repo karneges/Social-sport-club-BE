@@ -17,7 +17,7 @@ export const addPostToCLub = asyncHandler(async (req: Request<Params, any, PostM
     let post = await Post.create(req.body)
     post = await post.populate({
         path: 'author',
-        select: 'name'
+        select: 'name photoUrl'
     }).execPopulate()
 
     // Select +post because thi is not selectable field
@@ -69,7 +69,7 @@ export const getPosts = asyncHandler(async (req: Request<Params, any, any, Query
 export const editPost = asyncHandler(async (req: Request<Params, any, PostModel>, res: Response, next: NextFunction) => {
     let post = await Post.findById(req.params.postId).populate({
         path: 'author',
-        select: 'name'
+        select: 'name photoUrl',
     }).exec()
     if (!post) {
         return next(

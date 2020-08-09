@@ -98,15 +98,15 @@ export class StravaStatisticsGeneratorBaseClass {
     }
 
     protected getSportTypesFieldsFromProjectPipeLine() {
-        return this.config.fields.map<{ sportValueName: TrainingValues, value: any }>((fieldName) => {
+        return this.config.fields.map<{ trainingDimensionName: TrainingValues, value: any }>((fieldName) => {
             if (fieldName in this.summableFields) {
                 return {
-                    sportValueName: fieldName,
+                    trainingDimensionName: fieldName,
                     value: { '$sum': `$doc.fieldName` }
                 }
             }
             return {
-                sportValueName: fieldName,
+                trainingDimensionName: fieldName,
                 value: { '$sum': `$doc.${ fieldName }` }
             }
         })
