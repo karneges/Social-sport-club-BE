@@ -46,7 +46,8 @@ app.use(expressFileUpload());
 // Use static Folders
 // app.use(express.static(path.join(__dirname ,'..','static')));
 // app.use('/', express.static(path.join(__dirname ,'..','static/angular')));
-app.use('/',express.static(path.join(__dirname,'..', 'public')));
+// app.use('/*',express.static(path.join(__dirname,'..', 'public')));
+app.use(express.static(path.join(__dirname,'..', 'public')));
 
 
 //Routes
@@ -59,9 +60,9 @@ app.use('/api/v1/messages', messageRouter)
 // app.use('/api/v1/events')
 
 //FE rout
-// app.use('*',(req, res, next) => {
-//   res.sendFile(path.join(__dirname,'..', 'static', 'angular/index.html'))
-// })
+app.use('*',(req, res, next) => {
+  res.sendFile(path.join(__dirname,'..', 'public/index.html'))
+})
 
 app.use(errorHandler);
 
