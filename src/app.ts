@@ -46,6 +46,8 @@ app.use(expressFileUpload());
 // Use static Folders
 // app.use(express.static(path.join(__dirname ,'..','static')));
 // app.use('/', express.static(path.join(__dirname ,'..','static/angular')));
+app.use('/',express.static(path.join(__dirname,'..', 'public')));
+
 
 //Routes
 app.use('/api/v1/strava',stravaRoutes)
