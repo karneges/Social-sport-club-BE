@@ -44,10 +44,10 @@ const messages = JSON.parse(
 
 const importData = async () => {
   try {
-    // await Club.create(clubs);
-    // await Event.create(events);
-    // await User.create(users);
-    // await Post.create(posts);
+    await Club.create(clubs);
+    await Event.create(events);
+    await User.create(users);
+    await Post.create(posts);
     await Message.create(messages);
     console.log('Data Imported...'.green.inverse);
     process.exit();
@@ -61,10 +61,10 @@ const importData = async () => {
 
 const deleteData = async () => {
   try {
-    // await Club.deleteMany({});
-    // await Event.deleteMany({});
-    // await User.deleteMany({});
-    // await Post.deleteMany({});
+    await Club.deleteMany({});
+    await Event.deleteMany({});
+    await User.deleteMany({});
+    await Post.deleteMany({});
     await Message.deleteMany({});
     console.log('Data Destroyed...'.red.inverse);
     process.exit();

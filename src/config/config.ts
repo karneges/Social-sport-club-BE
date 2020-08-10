@@ -5,7 +5,7 @@ export const config = {
   PORT: '5000',
 
   MONGO_URI: 'mongodb+srv://Nikita:77No7jYD6AQut516@cluster0-svfak.mongodb.net/social-sport-club',
-
+  // MONGO_URI: 'mongodb://127.0.0.1:27017/?gssapiServiceName=mongodb',
   GEOCODER_PROVIDER: 'mapquest',
   GEOCODER_API_KEY: 'QFOX4sxyImtwcWrYhCiDwhE5zHD4vBE5',
 

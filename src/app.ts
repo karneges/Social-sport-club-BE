@@ -7,7 +7,7 @@ import { config } from './config/config';
 import morgan from 'morgan'
 import errorHandler from "./middleware/error";
 import path from 'path';
-// import seederRun from "./seeder";
+import seederRun from "./seeder";
 import http from 'http'
 import socket from 'socket.io'
 import { socketConnect } from './socket/socket.connect';
@@ -23,7 +23,7 @@ import stravaRoutes from './third-party-services/strava/routes/strava.routes'
 let userId = ''
 //Connect to database
 connectDB();
-// const new1 = seederRun + 3
+const new1 = seederRun + 3
 // start app
 const app = express();
 
