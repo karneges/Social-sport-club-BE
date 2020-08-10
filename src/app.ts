@@ -7,7 +7,7 @@ import { config } from './config/config';
 import morgan from 'morgan'
 import errorHandler from "./middleware/error";
 import path from 'path';
-import seederRun from "./seeder";
+// import seederRun from "./seeder";
 import http from 'http'
 import socket from 'socket.io'
 import { socketConnect } from './socket/socket.connect';
@@ -63,7 +63,7 @@ app.use('/api/v1/messages', messageRouter)
 
 app.use(errorHandler);
 
-const PORT = config.PORT || 3000;
+const PORT = config.PORT || 5000;
 
 server.listen(
     PORT, () => {
