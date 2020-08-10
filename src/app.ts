@@ -23,7 +23,7 @@ import stravaRoutes from './third-party-services/strava/routes/strava.routes'
 let userId = ''
 //Connect to database
 connectDB();
-const new1 = seederRun + 3
+// const new1 = seederRun + 3
 // start app
 const app = express();
 
