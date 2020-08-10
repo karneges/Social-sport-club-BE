@@ -3,7 +3,7 @@ import { StravaStatisticConfig, TrainingValues } from './models/strava-statistic
 import  mongoose from 'mongoose'
 
 export class StravaStatisticsGeneratorBaseClass {
-    private sportTypes = ['Run', 'NordicSki', 'Ride']
+    private sportTypes = ['Run', 'NordicSki', 'Ride','Walk']
     private maxMinAvgSum = ['max', 'min', 'avg', 'sum']
     private readonly userIds: mongoose.Types.ObjectId[]
     summableFields = ['distance', 'total_elevation_gain', 'elapsed_time', 'average_watts', 'kilojoules']
@@ -55,6 +55,7 @@ export class StravaStatisticsGeneratorBaseClass {
         // }
         let config = {}
         this.config.fields.forEach(fieldName => {
+
             config = {
                 ...config,
                 [fieldName]: this.getConfigForAllSportTypes(fieldName)
